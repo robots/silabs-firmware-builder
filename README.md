@@ -4,14 +4,16 @@ This repository contains Dockerfiles and GitHub actions that build Silicon Labs 
 
 The firmware builder uses the Silicon Labs [Gecko SDK (GSDK))(https://github.com/SiliconLabs/gecko_sdk) and proprietary Silicon Labs tools such as the Silicon Labs Configurator (slc) and the Simplicity Commander standalone utility. This is a fork of the [Silabs firmware builder by Nabu Casa](https://github.com/NabuCasa/silabs-firmware-builder), adding support for additional radio adapter hardware models.
 
-Again, please note that the pre-compiled firmware builds and both unofficial and experimental or cutting-edge releases which may brick your radio adapter so that it requires manual recovery via a compatible debug probe adapter.
+Again, please note that the pre-compiled firmware builds hosted in this repository both unofficial and experimental or cutting-edge releases with  minimal testing which may brick your radio adapter so that it requires manual recovery via a compatible debug probe adapter, however, the builds offered via the Web Flasher are the latest versions recommended by the community.
 
 ## Supported hardware:
-* Sonoff ZBDongle-E by ITead 
-* Sonoff iHost by ITead (uses the same firmware as Sonoff ZBDongle-E )
-* EasyIot ZB-GW04 v1.1 and v1.2
-* Smlight SLZB-07 (may require unlocked [bootloader](https://github.com/darkxst/silabs-firmware-builder/raw/main/firmware_builds/slzb-07/BTL_SLZB07.gbl) first)
-* Sparkfun Things Matter MGM240P (requires [bootloader](https://github.com/darkxst/silabs-firmware-builder/blob/main/firmware_builds/mgm240p/bootloader-uart-xmodem_NCP.hex) to be flashed first using Silabs [Simplicity Commander](https://community.silabs.com/s/article/simplicity-commander?language=en_US))
+* Sonoff ZBDongle-E by ITead (based on EFR32MG21)
+* Sonoff iHost by ITead (also based on EFR32MG21 and uses the same firmware as Sonoff ZBDongle-E)
+* EasyIot ZB-GW04 v1.1 and v1.2 (based on EFR32MG21)
+* Smlight SLZB-07 (which may require unlocked [bootloader](https://github.com/darkxst/silabs-firmware-builder/raw/main/firmware_builds/slzb-07/BTL_SLZB07.gbl) first) (based on EFR32MG21)
+* Smlight SLZB-06M (based on EFR32MG21)
+* Aeotec Zi-Stick (model “ZGA008” based on EFR32MG21)
+* Sparkfun Things Matter MGM240P (requires [bootloader](https://github.com/darkxst/silabs-firmware-builder/blob/main/firmware_builds/mgm240p/bootloader-uart-xmodem_NCP.hex) to be flashed first using Silabs [Simplicity Commander](https://community.silabs.com/s/article/simplicity-commander?language=en_US)) (based on EFR32MG24)
 * Elelabs Zigbee USB Adapter ELU013 (based on EFR32MG13P)
 * Elelabs Zigbee Raspberry Pi Shield ELR023 (based on EFR32MG13P)
 
@@ -22,7 +24,8 @@ Three network protocol application firmware variants are available:
 * **EmberZNet NCP** = Zigbee NCP (Network Co-Processor) is used as dedicated Zigbee Coordinator for Zigbee-only environments, for direct use with Zigbee2MQTT, Home Asssiatnt's ZHA integration, other Zigpy based Zigbee Gateway implementations, or other Zigbee gateways/frameworks that support the EZSP (EmberZNet Serial Protocol) interface.
 * **OpenThread RCP** firmware (experimental) = This [Thread](https://en.wikipedia.org/wiki/Thread_(network_protocol)) RCP (Radio Co-Processor) is used directy as dedicated Thread Border Router in Thread-only environments, used for [OpenThread Border Router add-on](https://github.com/home-assistant/addons/blob/master/openthread_border_router/DOCS.md) or wpantund.
 * **RCP Multi-PAN** (no longer recommended) = Multiprotocol firmware for concurrent communication over Zigbee and Thread via Home Assistant [SiliconLabs Multiprotocol add-on](https://github.com/home-assistant/addons/blob/master/silabs-multiprotocol/DOCS.md).
-  * Note that RCP MultiPAN in multiprotocol mode is no longer recommended as proven to not be stable with medium-sized networks or larger when using Zigbee and Thread simulationaly on the same radio adapter, though it can still be used when starting out with only a few devices if plan to migrate to separate dedicated radio adapters with Zigbee NCP  and Thread RCP firmware once added more devices (suggest not using more more than around ~20 devices on a single RCP Multi-PAN adapter that is used in Mmlti-protocol mode).
+
+**Note!** Be ware that the RCP MultiPAN in multiprotocol mode is no longer recommended because running multi-protocol with multiple active networks on a single radio adapter has proven to not be stable when using Zigbee and Thread network protocols simultaneously on the same radio adapter, it also increases the complexity of software componennt dependencies needed, so if already using RCP Multi-PAN then it is highly recommended that you plan to migrate to separate dedicated radio adapters instead, (using Zigbee NCP and Thread RCP firmware respectively), even if using RCP MultiPAN on a single radio adapter dongle has been working fine for you so far.
 
 External reference explaining these different co-processor designs at a high level:
   * https://github.com/home-assistant/addons/blob/master/silabs-multiprotocol/DOCS.md
